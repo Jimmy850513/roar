@@ -13,7 +13,8 @@ class SQL_Datamend(MySql_Database):
     def __init__(self):
         super().__init__()
     def stmt_select_active_id(self):
-        stmt = f"""SELECT id FROM active_info"""
+        stmt = f"""SELECT id FROM active_info
+        WHERE is_deleted IS NOT TRUE;"""
         rows = self.execute_query(stmt)
         return rows
     
