@@ -18,7 +18,7 @@ class SQL_Datamend(MySql_Database):
         rows = self.execute_query(stmt)
         return rows
     
-    def stmt_select_active_id(self):
+    def stmt_select_active_id_is_deleted(self):
         stmt = f""""""
     
     def insert_data_into_active_category_info(self,category,show_unit,master_unit,
@@ -202,7 +202,7 @@ def data_tidy():
 
 
 
-
+#SQL insert
 def api_schedule_for_sql():
     pass
 
