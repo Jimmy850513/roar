@@ -17,6 +17,9 @@ class SQL_Datamend(MySql_Database):
         rows = self.execute_query(stmt)
         return rows
     
+    def stmt_select_active_id(self):
+        stmt = f""""""
+    
     def insert_data_into_active_category_info(self,category,show_unit,master_unit,
                                               sub_unit,support_unit,other_unit,active_id):
         stmt = f"""INSERT INTO active_category_info(
@@ -41,9 +44,19 @@ class SQL_Datamend(MySql_Database):
         rows = self.execute_update(stmt)
         return rows
 
-    def insert_data_into_active_info(self):
+    def insert_data_into_active_info(self,id,title,discount_info,active_description,
+                                     active_promo_image,source_web_name,webSales,
+                                     start_date,end_date,comment,hitRate):
         stmt = f"""INSERT INTO active_info(
+        id, title, discount_info, active_description, 
+        active_promo_image, source_web_name, webSales, 
+        start_date, end_date, comment, hitRate
+        )VALUES(
+        '{id}','{title}','{discount_info}','{active_description}','{active_promo_image}',
+        '{source_web_name}','{webSales}','{start_date}','{end_date}','{comment}','{hitRate}'
         )"""
+        rows = self.execute_update(stmt)
+        return rows
 
 
 #confirm data is not inside

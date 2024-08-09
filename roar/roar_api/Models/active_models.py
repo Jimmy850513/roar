@@ -26,6 +26,8 @@ class Active_Information(models.Model):
     comment = models.CharField(max_length=200,null=False)
     #活動點閱數
     hitRate = models.IntegerField(null=False,default=0)
+    #使用找是否刪除
+    is_deleted = models.BooleanField(default=True)
     
     class Meta:
         db_table = 'active_info'
