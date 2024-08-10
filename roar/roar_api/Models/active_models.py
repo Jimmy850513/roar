@@ -9,7 +9,7 @@ class Active_Information(models.Model):
     #活動名稱
     title = models.CharField(max_length=300,null=False)
     #折扣資訊
-    discount_info = models.CharField(max_length=200)
+    discount_info = models.CharField(max_length=1000)
     #活動描述
     active_description = models.TextField()
     #活動推廣照片
@@ -27,7 +27,7 @@ class Active_Information(models.Model):
     #活動點閱數
     hitRate = models.IntegerField(null=False,default=0)
     #使用找是否刪除
-    is_deleted = models.BooleanField(default=True)
+    is_deleted = models.BooleanField(default=0)
     
     class Meta:
         db_table = 'active_info'
@@ -44,7 +44,7 @@ class Active_Show_Information(models.Model):
     #表演地點
     show_location_addr = models.CharField(max_length=200,null=False)
     #是否售票
-    on_sale = models.BooleanField(default=False)
+    on_sale = models.BooleanField(default=0)
     #售票說明
     price = models.CharField(max_length=200)
 

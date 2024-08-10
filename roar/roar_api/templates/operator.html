@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% block stylesheet %}
+<style>
+    label{
+        margin-right: 1.5em;
+        font-size: larger;
+    }
+    .input-group{
+        margin: 1em;
+    }
+    html, body {
+    height: 100%;
+    margin: 0;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column; /* 纵向排列 */
+        align-items: center; /* 水平居中 */
+        justify-content: center; /* 垂直居中 */
+        height: 100vh; /* 视口高度 */
+        padding: 20px; /* 可选：内边距 */
+    }
+
+    /* 确保每个子容器有足够的空间 */
+    #container2, #container {
+        width: 100%;
+        max-width: 1000px; /* 最大宽度，根据需要调整 */
+        margin-bottom: 20px; /* 可选：每个容器之间的间距 */
+    }
+
+    /* 你可以自定义每个子容器的样式 */
+    #container2 {
+        /* 你可以在这里添加样式 */
+    }
+
+    #container {
+        /* 你可以在这里添加样式 */
+    }
+    .dataTables_length {
+    display: none;
+    }
+    .dataTables_info {
+    display: none;
+    }
+    table,th,td{
+        border: 1px solid black;
+    }
+    thead{
+        background-color: aquamarine;
+    }
+    #modal_show_update{
+        display: none;
+    }
+</style>
+{% endblock %}
+{% block content2 %}
+{% for k,v in data_ld.items %}
+<div id="container2" style="margin-top: 8em;margin-left: 15em;">
+    <img src="{{v.active_promo_image}}" alt="暫無推廣圖片">
+</div>
+{% endfor %}
+{% endblock %}
+{% block content %}
+{% for k,v in data_ld.items %}
+<div id="container4" style="display: none;">
+    <input type="text" name="fmTextOP" id="fmTextOP" value="{{k}}">
+    <input type="text" name="fmTextOP2" id="fmTextOP2" value="">
+</div>
+<div id="container">
+    {% csrf_token %}
+    <div class="input-group">
+        <label for="title">活動主題</label>
+        <input type="text" name="title" id="title" value="{{v.title}}" readonly>
+    </div>
+    <div class="input-group">
+        <label for="start_date">活動開始日</label>
+        <input type="date" name="start_date" id="start_date" value="{{v.start_date}}" readonly>
+        <label for="end_date" style="padding-left: 10em;">活動結束日</label>
+        <input type="date" name="end_date" id="end_date" value="{{v.end_date}}" readonly>
+    </div>
+    <div class="input-group">
+        <label for="show_unit">演出單位</label>
+        <input type="text" name="show_unit" id="show_unit" value="{{v.show_unit}}"readonly>
+    </div>
+    <div class="input-group">
+        <label for="active_description">活動資訊</label>
+        <textarea name="active_description" id="active_description" cols="80" rows="4" readonly>
+            {{v.active_description}}
+        </textarea>
+    </div>
+    <div class="input-group">
+        <label for="title">演出時段</label>
+        <button type="button" class="btn btn-primary" id="button_show_update" style="visibility: hidden;">變更表演資訊</button>
+        <table id="showDetail">
+            <thead>
+                <tr>
+                    <th>演出開始時段</th>
+                    <th>演出結束時段</th>
+                    <th>演出地點</th>
+                    <th>演出地址</th>
+                    <th>是否售票</th>
+                    <th>售票資訊</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in v.show_data %}
+                <tr data-showstart="{{data.show_start_time}}" data-showend="{{data.show_end_time}}"
+                data-showlocation="{{data.show_location}}" 
+                data-showlocationaddr="{{data.show_location_addr}}"
+                data-onsale="{{data.on_sale}}"
+                data-price="{{data.price}}" data-id="{{data.id}}"
+                >
+                    <td>{{data.show_start_time}}</td>
+                    <td>{{data.show_end_time}}</td>
+                    <td>{{data.show_location}}</td>
+                    <td>{{data.show_location_addr}}</td>
+                    <td>{{data.on_sale}}</td>
+                    <td>{{data.price}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="input-group">
+        <label for="master_unit">主辦單位</label>
+        <input type="text" name="master_unit" id="master_unit" value="{{v.master_unit}}" readonly>
+        <label for="sub_unit" style="padding-left: 10em;">協辦單位</label>
+        <input type="text" name="sub_unit" id="sub_unit" value="{{v.sub_unit}}" readonly>
+    </div>
+    <div class="input-group">
+        <label for="support_unit">贊助單位</label>
+        <input type="text" name="support_unit" id="support_unit" value="{{v.support_unit}}" readonly>
+        <label for="other_unit" style="padding-left: 10em;">其他單位</label>
+        <input type="text" name="other_unit" id="other_unit" value="{{v.other_unit}}" readonly>
+    </div>
+</div>
+{% endfor %}
+<div class="modal" id="modal_show_update" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">表演時段更改</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="input-group">
+                <label for="show_start_time">演出開始時間</label>
+                <input type="text" name="show_start_time" id="show_start_time">
+            </div>
+            <div class="input-group">
+                <label for="show_end_time">演出結束時間</label>
+                <input type="text" name="show_end_time" id="show_end_time">
+            </div>
+            <div class="input-group">
+                <label for="show_location">演出地點</label>
+                <input type="text" name="show_location" id="show_location">
+            </div>
+            <div class="input-group">
+                <label for="show_location_addr">演出地址</label>
+                <input type="text" name="show_location_addr" id="show_location_addr">
+            </div>
+            <div class="input-group">
+                <label for="on_sale">是否售票</label>
+                <input type="text" name="on_sale" id="on_sale">
+            </div>
+            <div class="input-group">
+                <label for="price">售票資訊</label>
+                <input type="text" name="price" id="price">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="model_close" onclick="close_modal()">Close</button>
+          <button type="button" class="btn btn-primary" id="show_update">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block content3 %}
+<div id="container3" style="margin-left: 30em;padding: 5em;">
+    <button type="button" class="btn btn-primary" id="button_update" style="margin-right: 3em;">更新活動細節</button>
+    <button type="button" class="btn btn-primary" id="button_delete">刪除活動細節</button>
+    <button type="button" class="btn btn-primary" id="button_check" style="visibility: hidden;margin-left: 2em;">確定儲存變更</button>
+</div>
+{% endblock %}
+{% block jsfunction %}
+<script>
+
+    function update_show(){
+
+    }
+    function close_modal(){
+        $("#modal_show_update").css("display","none");
+    }
+   $(document).ready(function() {
+    $("#showDetail").DataTable({
+            autowidth:false,
+            searching:false,
+            ordering:false,
+            paging: false ,
+            scrollY: '15vh', 
+            scrollCollapse: true,
+            columnDefs: [
+        {targets: 0, width: '15%' },
+        {targets: 1, width: '15%' },
+        {targets: 2, width: '10%' },
+        {targets: 3, width: '40%' },
+        {targets: 4, width: '15%' },
+        {targets: 5, width: '30%' },
+            ]
+        });
+    $("#button_update").on("click",function(){
+        $("input").removeAttr("readonly");
+        $("textarea").removeAttr("readonly");
+        $("#button_check").css("visibility",'visible');
+    });
+    $("#showDetail tbody tr").on("click",function(){
+        $('#showDetail tbody tr').removeClass('selected');
+        let $row = $(this)
+        $row.addClass('selected');
+        let show_start_time = $row.data('showstart');
+        let show_end_time = $row.data('showend');
+        let show_location = $row.data('showlocation');
+        let show_location_addr = $row.data('showlocationaddr')
+        let on_sale = $row.data('onsale');
+        let price = $row.data('price');
+        $("#show_start_time").val(show_start_time);
+        $("#show_end_time").val(show_end_time);
+        $("#show_location").val(show_location);
+        $("#show_location_addr").val(show_location_addr);
+        $("#on_sale").val(on_sale);
+        $("#price").val(price);
+        $("#fmTextOP2").val("update_show")
+        $("#button_show_update").css("visibility","visible");
+        $("#button_show_update").on("click",function(){
+            $("#modal_show_update").css("display","block");
+        })
+        console.log($("#fmTextOP2").val())
+    });
+
+    $("#button_check").on("click",function(){
+        $("#fmTextOP2").val("update_active");
+        let csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        let active_id = $("#fmTextOP").val();
+        let data = {
+            title: $("#title").val(),
+            start_date: $("#start_date").val(),
+            end_date: $("#end_date").val(),
+            show_unit: $("#show_unit").val(),
+            master_unit: $("#master_unit").val(),
+            sub_unit: $("#sub_unit").val(),
+            support_unit: $("#support_unit").val(),
+            other_unit: $("#other_unit").val(),
+            fmTextOP2:'update_active'
+        };
+        console.log($("#fmTextOP2").val())
+        fetch(`/operation/${active_id}/`,{method:"PATCH",headers:{
+            'Content-Type': 'application/json',
+            'X-CSRFToken':csrf_token
+        },body:JSON.stringify(data)}).then((response)=>{
+            return response.json()
+        }).then((response)=>{
+
+        }).catch((e)=>{
+
+        })
+    })
+   })
+</script>
+{% endblock %}

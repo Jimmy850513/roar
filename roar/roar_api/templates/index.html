@@ -1,5 +1,90 @@
 {% extends 'base.html' %}
+{% block stylesheet %}
+<style>
+    th,td,table{
+        border: 1px solid black;
+    }
+    .dataTables_length {
+    display: none;
+    }
+    .dataTables_info {
+    display: none;
+    }
+    .selected {
+        background-color: #87ebad;
+    }
+</style>
+{% endblock %}
 {% block content %}
-
-
+<div id="container">
+    <table id="tableMain">
+        <thead>
+            <tr style=" background-color: #87CEEB;">
+                <th class="text-center">UID</th>
+                <th class="text-center">活動主題</th>
+                <th class="text-center">來源官網</th>
+                <th class="text-center">售票官網</th>
+                <th class="text-center">活動開始時間</th>
+                <th class="text-center">活動結束時間</th>
+                <th class="text-center">點閱率</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data_ld %}
+            <tr data-id="{{data.id}}">
+                <td class="text-center">{{data.id}}</td>
+                <td class="text-center">{{data.title}}</td>
+                <td class="text-center">{{data.source_web_name}}</td>
+                <td class="text-center">{{data.webSales}}</td>
+                <td class="text-center">{{data.start_date}}</td>
+                <td class="text-center">{{data.end_date}}</td>
+                <td class="text-center">{{data.hitRate}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div id="container2" style="margin-top: 0.5em; display: none;">
+        <button type="button" class="btn btn-primary" id="button_search">查詢活動細節</button>
+    </div>
+    <div style="display: none;">
+        <input type="text" name="fmTextVALUE" id="fmTextVALUE" value="">
+    </div>
+</div>
+{% endblock %}
+{% block jsfunction %}
+<script>
+    $(document).ready(function() {
+        $("#tableMain").DataTable({
+            autowidth:false,
+            ordering:false,
+            paging: false ,
+            scrollY: '70vh', 
+            scrollCollapse: true,
+            columnDefs: [
+        {targets: 0, visible: false},
+        {targets: 1, width: '35%' },
+        {targets: 2, width: '13%' },
+        {targets: 3, width: '13%' },
+        {targets: 4, width: '13%' },
+        {targets: 5, width: '13%' },
+        {targets: 6, width: '13%'}
+            ]
+        });
+        $('#tableMain tbody tr').on('click', function() {
+            $('#tableMain tbody tr').removeClass('selected');
+            let $row = $(this)
+            $row.addClass('selected');
+            let id = $row.data('id');  
+            $("#fmTextVALUE").val(id);
+            if ($("#fmTextVALUE").val()){
+                $("#container2").css("display",'block');
+            }   
+        });
+        $("#button_search").on("click",function(){
+            let id = $("#fmTextVALUE").val()
+            let url = `/operation/${id}/`;
+            window.location.href = url;
+        })
+    });
+</script>
 {% endblock %}

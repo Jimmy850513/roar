@@ -4,7 +4,7 @@ class Sql_Param:
         self.dbname = 'roar'
         self.host = 'localhost'
         self.user = 'root'
-        self.port = '3306'
+        self.port = 3306
         self.password = 'password'
     
     def __str__(self):

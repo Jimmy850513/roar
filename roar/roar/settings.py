@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'roar_api',
     'rest_framework',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -51,7 +52,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+CRONJOBS = [
+    ('*/20 * * * *','roar_api.job.job.print_result')
+]
 
 ROOT_URLCONF = 'roar.urls'
 

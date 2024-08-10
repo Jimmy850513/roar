@@ -6,6 +6,6 @@ class RoarApiConfig(AppConfig):
     name = 'roar_api'
 
     def ready(self):
-        from job import updater
-        updater.strat()
+        from .job import updater
+        updater.start()
         

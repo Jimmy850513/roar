@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block stylesheet %}
+<style>
+    .container {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: flex-start; /* Align children to the top of the container */
+    height: 100vh; /* Full viewport height */
+    padding-top: 50px; /* Space from the top of the viewport to push content down */
+}
+
+h1 {
+    margin-bottom: 20px; /* Space between h1 and form */
+    text-align: center; /* Center text horizontally */
+}
+
+#container {
+    width: 100%;
+    max-width: 600px; /* Adjust this width as needed */
+    padding: 20px; /* Optional padding */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    background-color: #fff; /* Optional background color */
+    border-radius: 8px; /* Optional rounded corners */
+}
+
+    
+   
+</style>
+{% endblock %}
+{% block content2 %}
+    <h1>
+        Login
+    </h1>
+{% endblock %}
+{% block content %}
+<div id=container>
+    {% if message %}
+        <p style="color: red;">{{ message }}</p>
+    {% endif %}
+    <form action="." method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">使用者帳號</label>
+          <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">使用者密碼</label>
+          <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
+{% endblock %}
