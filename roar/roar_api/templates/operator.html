@@ -52,6 +52,9 @@
     #modal_show_update{
         display: none;
     }
+    #modal_message{
+        display:none;
+    }
 </style>
 {% endblock %}
 {% block content2 %}
@@ -66,6 +69,7 @@
 <div id="container4" style="display: none;">
     <input type="text" name="fmTextOP" id="fmTextOP" value="{{k}}">
     <input type="text" name="fmTextOP2" id="fmTextOP2" value="">
+    <input type="text" name="show_id" id="show_id" value="">
 </div>
 <div id="container">
     {% csrf_token %}
@@ -91,7 +95,9 @@
     </div>
     <div class="input-group">
         <label for="title">演出時段</label>
+        {% if login_status %}
         <button type="button" class="btn btn-primary" id="button_show_update" style="visibility: hidden;">變更表演資訊</button>
+        {% endif %}
         <table id="showDetail">
             <thead>
                 <tr>
@@ -136,6 +142,13 @@
     </div>
 </div>
 {% endfor %}
+{% if login_status %}
+<div id="container3" style="margin-left: 30em;padding: 1em;">
+    <button type="button" class="btn btn-primary" id="button_update" style="margin-right: 3em;">更新活動細節</button>
+    <button type="button" class="btn btn-primary" id="button_delete">刪除活動細節</button>
+    <button type="button" class="btn btn-primary" id="button_check" style="visibility: hidden;margin-left: 2em;">確定儲存變更</button>
+</div>
+{% endif %}
 <div class="modal" id="modal_show_update" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -170,29 +183,113 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="model_close" onclick="close_modal()">Close</button>
-          <button type="button" class="btn btn-primary" id="show_update">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="model_close" onclick="close_modal()">暫不更新</button>
+          <button type="button" class="btn btn-primary" id="show_update">確認更新</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="modal_message" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">提示訊息</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="modal_msg_text"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="refresh_page">關閉</button>
         </div>
       </div>
     </div>
   </div>
 {% endblock %}
 {% block content3 %}
-<div id="container3" style="margin-left: 30em;padding: 5em;">
-    <button type="button" class="btn btn-primary" id="button_update" style="margin-right: 3em;">更新活動細節</button>
-    <button type="button" class="btn btn-primary" id="button_delete">刪除活動細節</button>
-    <button type="button" class="btn btn-primary" id="button_check" style="visibility: hidden;margin-left: 2em;">確定儲存變更</button>
-</div>
+<!--  -->
 {% endblock %}
 {% block jsfunction %}
 <script>
 
-    function update_show(){
+    function delete_active(){
+        let csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        let active_id = $("#fmTextOP").val();
+        fetch(`/operation/${active_id}/`,{method:"DELETE",headers:{
+            'Content-Type': 'application/json',
+            'X-CSRFToken':csrf_token
+        }}).then((response)=>{
+            return rsponse.json()
+        }).then((response)=>{
+            show_modal(response.data.msg);
+            if(response.data.status == 'OK'){
+                $("#refresh_page").on("click",function(){
+                location.reload();
+                })
+            }
+        }).catch((e)=>{
+            console.log(e)
+        })
+    }
 
+
+    function update_show(){
+        let csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        let active_id = $("#fmTextOP").val();
+        if (!$("#show_start_time").val()){
+            show_modal("要輸入表演開始時間,不然不能更新！");
+            $("#refresh_page").on("click",function(){
+                close_modal_msg()
+                return;
+            })
+            return;
+        }
+        if (!$("#show_end_time").val()){
+            show_modal("要輸入表演結束時間,不然不能更新！");
+             $("#refresh_page").on("click",function(){
+                close_modal_msg()
+                return;
+            })
+            return;
+        }
+        let data = {
+            show_start_time:$("#show_start_time").val(),
+            show_end_time:$("#show_end_time").val(),
+            show_location:$("#show_location").val(),
+            show_location_addr:$("#show_location_addr").val(),
+            on_sale:$("#on_sale").val(),
+            price:$("#price").val(),
+            show_id:$("#show_id").val(),
+            fmTextOP2:$("#fmTextOP2").val()
+        }
+        fetch(`/operation/${active_id}/`,{method:"PATCH",headers:{
+            'Content-Type': 'application/json',
+            'X-CSRFToken':csrf_token
+        },body:JSON.stringify(data)}).then((response)=>{
+            return response.json()
+        }).then((response)=>{
+            show_modal(response.data.msg);
+            if(response.data.status == 'OK'){
+                $("#refresh_page").on("click",function(){
+                location.reload();
+            })
+            }
+        }).catch((e)=>{
+            console.log(e)
+        });
+    }
+
+    function show_modal(msg){
+        $("#modal_message").css("display","block");
+        $("#modal_msg_text").text(msg);
+    }
+    function close_modal_msg(){
+        $("#modal_message").css("display","none");
     }
     function close_modal(){
         $("#modal_show_update").css("display","none");
     }
+
    $(document).ready(function() {
     $("#showDetail").DataTable({
             autowidth:false,
@@ -215,10 +312,14 @@
         $("textarea").removeAttr("readonly");
         $("#button_check").css("visibility",'visible');
     });
+    $("#show_update").on("click",function(){
+        update_show();
+    })
     $("#showDetail tbody tr").on("click",function(){
         $('#showDetail tbody tr').removeClass('selected');
         let $row = $(this)
         $row.addClass('selected');
+        let show_id = $row.data('id');
         let show_start_time = $row.data('showstart');
         let show_end_time = $row.data('showend');
         let show_location = $row.data('showlocation');
@@ -233,10 +334,11 @@
         $("#price").val(price);
         $("#fmTextOP2").val("update_show")
         $("#button_show_update").css("visibility","visible");
+        $("#show_id").val(show_id);
         $("#button_show_update").on("click",function(){
             $("#modal_show_update").css("display","block");
         })
-        console.log($("#fmTextOP2").val())
+       
     });
 
     $("#button_check").on("click",function(){
@@ -252,20 +354,27 @@
             sub_unit: $("#sub_unit").val(),
             support_unit: $("#support_unit").val(),
             other_unit: $("#other_unit").val(),
+            active_description:$("#active_description").val(),
             fmTextOP2:'update_active'
         };
-        console.log($("#fmTextOP2").val())
+        
         fetch(`/operation/${active_id}/`,{method:"PATCH",headers:{
             'Content-Type': 'application/json',
             'X-CSRFToken':csrf_token
         },body:JSON.stringify(data)}).then((response)=>{
             return response.json()
         }).then((response)=>{
-
+            show_modal(response.data.msg);
+            $("#refresh_page").on("click",function(){
+                location.reload();
+            })
         }).catch((e)=>{
-
-        })
+            console.log(e);
+        });
+    });
+    $("#button_delete").on("click",function(){
+        delete_active();
     })
-   })
+   });
 </script>
 {% endblock %}

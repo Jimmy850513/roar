@@ -47,7 +47,7 @@ class Active_Show_Information(models.Model):
     on_sale = models.BooleanField(default=0)
     #售票說明
     price = models.CharField(max_length=200)
-
+    is_deleted = models.BooleanField(default=0)
     class Meta:
         db_table = 'active_show_info'
 
@@ -66,6 +66,6 @@ class Active_Category_Unit(models.Model):
     support_unit = models.CharField(max_length=200)
     #其他單位
     other_unit = models.CharField(max_length=200)
-
+    is_deleted = models.BooleanField(default=0)
     class Meta:
         db_table = 'active_category_info'

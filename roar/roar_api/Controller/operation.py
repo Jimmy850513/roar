@@ -5,7 +5,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from ..Models.active_models import Active_Category_Unit,Active_Information,Active_Show_Information
 from django.template.response import TemplateResponse
-
+from django.utils.timezone import make_aware
+from datetime import datetime
 class Index(TemplateView):
     template_name = 'index.html'
     def get(self,request,*args,**kwargs):
@@ -24,6 +25,8 @@ class Index(TemplateView):
 class Operation(APIView):
     def get(self, request, *args, **kwargs):
         u_id = self.kwargs.get('UID')
+        username = request.session.get('username')
+        login_status = request.session.get('login_status',False)
         print(u_id)  # 打印 UID 或进行其他处理
         try:
             active_show_info = list(Active_Show_Information.objects.filter(active_info_id=u_id).values())
@@ -65,32 +68,111 @@ class Operation(APIView):
             print(e)
         template_dict = dict(
             uid = u_id,
-            data_ld = data_dict
-            
+            data_ld = data_dict,
+            username=username,
+            login_status=login_status
         )
-        # 渲染模板并返回响应
         return TemplateResponse(request, 'operator.html', template_dict)
+    
     def patch(self,request,*args,**kwargs):
+        u_id = self.kwargs.get('UID')
+        username = request.session.get('username')
+        login_status = request.session.get('login_status',False)
         data_form = request.data
-        
-        try:
-            pass
-        except Exception as e:
-            pass
+        op = data_form.get("fmTextOP2")
+        print(data_form)
+        if op == 'update_show':
+            try:
+                """
+                {
+                'show_start_time': '2024-08-10 00:00:00', 
+                'show_end_time': '2024-08-10 00:00:00'
+                'show_location': '台北捷運音樂進站', 
+                'show_location_addr': '臺北市中山站 4 號出口心中山舞臺、東區地下街第 2 廣場、
+                大安森林公園站陽光大廳、松山站穹頂廣場、新店站廣場', 
+                'on_sale': '是', 
+                'price': '一張票200', 
+                'fmTextOP2': 'update_show'}
+                """
+                show_id = data_form.get('show_id')
+                show_start_time = data_form.get('show_start_time')
+                show_end_time = data_form.get('show_end_time')
+                # show_start_time = make_aware(datetime.strptime(show_start_time_str,'%Y-%m-%d %H:%M:%S'))
+                # show_end_time = make_aware(datetime.strptime(show_end_time_str,'%Y-%m-%d %H:%M:%S'))
+                show_location = data_form['show_location']
+                show_location_addr = data_form['show_location_addr']
+                on_sale = 1 if data_form['on_sale'] == '是' else 0
+                price = data_form['price']
+                data_ld = Active_Show_Information.objects.filter(id=show_id).update(
+                    show_start_time=show_start_time,
+                    show_end_time=show_end_time,
+                    show_location=show_location,
+                    show_location_addr=show_location_addr,
+                    on_sale=on_sale,
+                    price=price
+                    )
+                if data_ld!=0:
+                    msg = '表演資訊更新成功'
+                    status = "OK"
+                else:
+                    msg = '找不到匹配的資料'
+                    status = "ERROR"
+            except Exception as e:
+                msg='表演資訊更新失敗'
+                status = "ERROR"
+                print(e)
+        elif op == 'update_active':
+            try:
+                title = data_form.get('title')
+                start_date = data_form.get('start_date')
+                active_description = data_form.get('active_description')
+                end_date = data_form.get('end_date')
+                show_unit = data_form['show_unit'] if data_form['show_unit'] != '暫無演出單位' else ''
+                master_unit = data_form['master_unit'] if data_form['master_unit'] !="暫無主辦單位" else ''
+                sub_unit = data_form['sub_unit'] if data_form['sub_unit']!='暫無協辦單位' else ''
+                support_unit = data_form['support_unit'] if data_form['support_unit'] !='暫無贊助單位' else ''
+                other_unit = data_form['other_unit'] if data_form['other_unit']!='暫無其他單位' else ''
 
-        ret_json = dict(data={})
+                data_ld = Active_Information.objects.filter(id=u_id).update(title=title,
+                                                                            start_date=start_date,
+                                                                            end_date=end_date,
+                                                                            active_description=active_description
+                                                                            )
+                data_ld2 = Active_Category_Unit.objects.filter(active_id=u_id).update(show_unit=show_unit,
+                                                                               master_unit=master_unit,
+                                                                               sub_unit=sub_unit,
+                                                                               support_unit=support_unit,
+                                                                               other_unit=other_unit
+                                                                               )
+                if data_ld!=0 and data_ld2!=0:
+                    msg = '活動資訊更新成功'
+                    status = "OK"
+                else:
+                    msg='未找到匹配的對象'
+                    status = "ERROR"
+            except Exception as e:
+                msg = f'活動資訊更新失敗,發生異常:{e}'
+                status = "ERROR"
+        ret_json = dict(data={'msg':msg,'status':status})
         return Response(ret_json)
 
-    def deleted(self,request,*args,**kwargs):
-        pass
-# class Operation(TemplateView):
-#     template_name = 'operator.html'
-#     def get(self,request,*args,**kwargs):
-#         uid = self.kwargs.get('UID')
-#         print(uid)
-#         template_dict = dict()
-#         return render(request,self.template_name,template_dict)
-
-#     def post(self,request,*args,**kwargs):
-#         template_dict = dict()
-#         return render(request,self.template_name,template_dict)
+    def delete(self,request,*args,**kwargs):
+        u_id = self.kwargs.get('UID')
+        username = request.session.get('username')
+        login_status = request.session.get('login_status',False)
+        try:
+            data_ld = Active_Information.objects.filter(id=u_id).update(is_deleted=1)
+            data_ld2 = Active_Category_Unit.objects.filter(active_id=u_id).update(is_deleted=1)
+            data_ld3 = Active_Show_Information.objects.filter(active_info_id=u_id).update(is_deleted=1)
+            if data_ld!=0 and data_ld2!=0 and data_ld3!=0:
+                msg='活動資料、表演資料刪除成功'
+                status = "OK"
+            else:
+                msg='匹配不到資料'
+                status = "ERROR"
+        except Exception as e:
+            msg = '刪除失敗,請重新操作'
+            status = "ERROR"
+            print(e)
+        ret_json = dict(data={'msg':msg,'status':status})
+        return Response(ret_json)
