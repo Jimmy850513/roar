@@ -8,6 +8,7 @@ from datetime import datetime
 client = MongoClient('mongodb://localhost:27017/')
 db = client['music_active']
 collection = db['music_active']
+##
 #pymysql的資訊
 # class SQL_Datamend(SQLite3_Database):
 #     def __init__(self):
