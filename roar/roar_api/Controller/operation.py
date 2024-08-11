@@ -175,4 +175,5 @@ class Operation(APIView):
             status = "ERROR"
             print(e)
         ret_json = dict(data={'msg':msg,'status':status})
+        print(ret_json)
         return Response(ret_json)

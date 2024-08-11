@@ -219,12 +219,12 @@
             'Content-Type': 'application/json',
             'X-CSRFToken':csrf_token
         }}).then((response)=>{
-            return rsponse.json()
+            return response.json();
         }).then((response)=>{
             show_modal(response.data.msg);
             if(response.data.status == 'OK'){
                 $("#refresh_page").on("click",function(){
-                location.reload();
+                    window.location.href = '/';
                 })
             }
         }).catch((e)=>{
