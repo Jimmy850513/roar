@@ -167,7 +167,7 @@ class Operation(APIView):
                 msg = f'活動資訊更新失敗,發生異常:{e}'
                 status_msg = "ERROR"
                 status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        ret_json = dict(data={'msg':msg,'status':status_msg,'status_code':status_code})
+        ret_json = dict(data={'msg':msg,'status_msg':status_msg,'status_code':status_code})
         return Response(ret_json)
 
     def delete(self,request,*args,**kwargs):
