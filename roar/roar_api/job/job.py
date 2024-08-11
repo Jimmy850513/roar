@@ -1,7 +1,7 @@
 import requests
 from pymongo import MongoClient
 import json
-from .SQL_database import SQLite3_Database
+from .SQL_database import MySql_Database
 import asyncio
 from datetime import datetime
 #mongodb的資訊
@@ -10,6 +10,57 @@ db = client['music_active']
 collection = db['music_active']
 ##
 #pymysql的資訊
+class SQL_Datamend(MySql_Database):
+    def __init__(self):
+        super().__init__()
+
+    def stmt_select_active_id(self):
+        stmt = f"""SELECT id FROM active_info"""
+        rows = self.execute_query(stmt)
+        return rows
+    
+    def insert_data_into_active_category_info(self,category,show_unit,master_unit,
+                                              sub_unit,support_unit,other_unit,active_id):
+        stmt = """INSERT INTO active_category_info (
+        category, show_unit, master_unit, sub_unit, 
+            support_unit, other_unit, active_id,
+            is_deleted
+        ) VALUES (
+            %s, %s, %s, %s, %s, %s, %s,0
+        )"""
+        params = (category, show_unit, master_unit, sub_unit, support_unit, other_unit, active_id)
+        rows = self.execute_update(stmt,params)
+        return rows
+
+    def insert_data_into_active_show_info(self,show_start_time,show_end_time,show_location,
+                                          show_location_addr,on_sale,price,active_info_id):
+        stmt = """INSERT INTO active_show_info (
+            show_start_time, show_end_time, show_location, 
+            show_location_addr, on_sale, price, active_info_id,
+            is_deleted
+        ) VALUES (
+            %s, %s, %s, %s, %s, %s, %s,0
+        )"""
+        params = (show_start_time, show_end_time, show_location,
+                show_location_addr, on_sale, price, active_info_id)
+        rows = self.execute_update(stmt,params)
+        return rows
+
+    def insert_data_into_active_info(self,id,title,discount_info,active_description,
+                                     active_promo_image,source_web_name,webSales,
+                                     start_date,end_date,comment,hitRate):
+        stmt = """INSERT INTO active_info (
+            id, title, discount_info, active_description, 
+            active_promo_image, source_web_name, webSales, 
+            start_date, end_date, comment, hitRate, is_deleted
+        ) VALUES (
+            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0
+        )"""
+        params = (id, title, discount_info, active_description,
+                  active_promo_image, source_web_name, webSales,
+                  start_date, end_date, comment, hitRate)
+        rows = self.execute_update(stmt,params)
+        return rows
 # class SQL_Datamend(SQLite3_Database):
 #     def __init__(self):
 #         super().__init__()
@@ -26,7 +77,7 @@ collection = db['music_active']
 #             support_unit, other_unit, active_id,
 #             is_deleted
 #         ) VALUES (
-#             %s, %s, %s, %s, %s, %s, %s,0
+#             ?, ?, ?, ?, ?, ?, ?,0
 #         )"""
 #         params = (category, show_unit, master_unit, sub_unit, support_unit, other_unit, active_id)
 #         rows = self.execute_update(stmt,params)
@@ -39,7 +90,7 @@ collection = db['music_active']
 #             show_location_addr, on_sale, price, active_info_id,
 #             is_deleted
 #         ) VALUES (
-#             %s, %s, %s, %s, %s, %s, %s,0
+#             ?, ?, ?, ?, ?, ?, ?,0
 #         )"""
 #         params = (show_start_time, show_end_time, show_location,
 #                 show_location_addr, on_sale, price, active_info_id)
@@ -54,64 +105,13 @@ collection = db['music_active']
 #             active_promo_image, source_web_name, webSales, 
 #             start_date, end_date, comment, hitRate, is_deleted
 #         ) VALUES (
-#             %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 0
+#             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0
 #         )"""
 #         params = (id, title, discount_info, active_description,
 #                   active_promo_image, source_web_name, webSales,
 #                   start_date, end_date, comment, hitRate)
 #         rows = self.execute_update(stmt,params)
 #         return rows
-class SQL_Datamend(SQLite3_Database):
-    def __init__(self):
-        super().__init__()
-
-    def stmt_select_active_id(self):
-        stmt = f"""SELECT id FROM active_info"""
-        rows = self.execute_query(stmt)
-        return rows
-    
-    def insert_data_into_active_category_info(self,category,show_unit,master_unit,
-                                              sub_unit,support_unit,other_unit,active_id):
-        stmt = """INSERT INTO active_category_info (
-        category, show_unit, master_unit, sub_unit, 
-            support_unit, other_unit, active_id,
-            is_deleted
-        ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?,0
-        )"""
-        params = (category, show_unit, master_unit, sub_unit, support_unit, other_unit, active_id)
-        rows = self.execute_update(stmt,params)
-        return rows
-
-    def insert_data_into_active_show_info(self,show_start_time,show_end_time,show_location,
-                                          show_location_addr,on_sale,price,active_info_id):
-        stmt = """INSERT INTO active_show_info (
-            show_start_time, show_end_time, show_location, 
-            show_location_addr, on_sale, price, active_info_id,
-            is_deleted
-        ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?,0
-        )"""
-        params = (show_start_time, show_end_time, show_location,
-                show_location_addr, on_sale, price, active_info_id)
-        rows = self.execute_update(stmt,params)
-        return rows
-
-    def insert_data_into_active_info(self,id,title,discount_info,active_description,
-                                     active_promo_image,source_web_name,webSales,
-                                     start_date,end_date,comment,hitRate):
-        stmt = """INSERT INTO active_info (
-            id, title, discount_info, active_description, 
-            active_promo_image, source_web_name, webSales, 
-            start_date, end_date, comment, hitRate, is_deleted
-        ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0
-        )"""
-        params = (id, title, discount_info, active_description,
-                  active_promo_image, source_web_name, webSales,
-                  start_date, end_date, comment, hitRate)
-        rows = self.execute_update(stmt,params)
-        return rows
 
 # MongoDB 配置
 client = MongoClient('mongodb://localhost:27017/')
