@@ -191,6 +191,6 @@ class Operation(APIView):
             status_msg = "ERROR"
             status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
             print(e)
-        ret_json = dict(data={'msg':msg,'status':status_msg,'status_code':status_code})
+        ret_json = dict(data={'msg':msg,'status_msg':status_msg,'status_code':status_code})
         print(ret_json)
         return Response(ret_json)
