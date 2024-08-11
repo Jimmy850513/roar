@@ -22,9 +22,10 @@ class SQL_Datamend(MySql_Database):
                                               sub_unit,support_unit,other_unit,active_id):
         stmt = """INSERT INTO active_category_info (
         category, show_unit, master_unit, sub_unit, 
-            support_unit, other_unit, active_id
+            support_unit, other_unit, active_id,
+            is_deleted
         ) VALUES (
-            %s, %s, %s, %s, %s, %s, %s
+            %s, %s, %s, %s, %s, %s, %s,0
         )"""
         params = (category, show_unit, master_unit, sub_unit, support_unit, other_unit, active_id)
         rows = self.execute_update(stmt,params)
@@ -34,9 +35,10 @@ class SQL_Datamend(MySql_Database):
                                           show_location_addr,on_sale,price,active_info_id):
         stmt = """INSERT INTO active_show_info (
             show_start_time, show_end_time, show_location, 
-            show_location_addr, on_sale, price, active_info_id
+            show_location_addr, on_sale, price, active_info_id,
+            is_deleted
         ) VALUES (
-            %s, %s, %s, %s, %s, %s, %s
+            %s, %s, %s, %s, %s, %s, %s,0
         )"""
         params = (show_start_time, show_end_time, show_location,
                 show_location_addr, on_sale, price, active_info_id)
