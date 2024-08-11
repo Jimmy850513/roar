@@ -79,12 +79,12 @@ def api_schedule_for_mongod():
         response = requests.get(url)
         data_list = response.json()
     except Exception as e:
-        return f'數據獲取失敗: {e}', '', False
+        return f'數據獲取失敗: {e}', '',False
 
     data_to_insert = data_check(data_list)
     if data_to_insert:
         collection.insert_many(data_to_insert)
-        return 'MongoDB 數據插入成功', '', True
+        return 'MongoDB 數據插入成功', '',True
     else:
         return '無需插入数据', '', False
 
@@ -179,7 +179,7 @@ def api_schedule_for_sql():
 # 主任务函数
 def print_result():
     msg1, msg2, msg3 = api_schedule_for_mongod()
-    if not msg3:
+    if msg3:
         msg4, msg5, msg6 = api_schedule_for_sql()
         print(msg1, msg2, msg3)
         print(msg4, msg5, msg6)
