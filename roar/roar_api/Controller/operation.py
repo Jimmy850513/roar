@@ -7,6 +7,7 @@ from ..Models.active_models import Active_Category_Unit,Active_Information,Activ
 from django.template.response import TemplateResponse
 from django.utils.timezone import make_aware
 from datetime import datetime
+from rest_framework import status
 class Index(TemplateView):
     template_name = 'index.html'
     def get(self,request,*args,**kwargs):
@@ -64,13 +65,20 @@ class Operation(APIView):
                     data_dict[data['active_id']]['sub_unit'] += data['sub_unit'] if data['sub_unit'] else "暫無協辦單位"
                     data_dict[data['active_id']]['support_unit'] += data['support_unit'] if data['support_unit'] else "暫無贊助單位"
                     data_dict[data['active_id']]['other_unit'] += data['other_unit'] if data['other_unit'] else "暫無其他單位"
+            msg = '資料匹配'
+            status_code = status.HTTP_200_OK
         except Exception as e:
             print(e)
+            msg = '找不到資料'
+            status_code = status.HTTP_404_NOT_FOUND
+        print(data_dict)
         template_dict = dict(
             uid = u_id,
             data_ld = data_dict,
             username=username,
-            login_status=login_status
+            login_status=login_status,
+            msg=msg,
+            status_code=status_code
         )
         return TemplateResponse(request, 'operator.html', template_dict)
     
@@ -113,13 +121,16 @@ class Operation(APIView):
                     )
                 if data_ld!=0:
                     msg = '表演資訊更新成功'
-                    status = "OK"
+                    status_msg = "OK"
+                    status_code = status.HTTP_200_OK
                 else:
                     msg = '找不到匹配的資料'
-                    status = "ERROR"
+                    status_msg = "ERROR"
+                    status_code = status.HTTP_404_NOT_FOUND
             except Exception as e:
                 msg='表演資訊更新失敗'
-                status = "ERROR"
+                status_msg = "ERROR"
+                status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
                 print(e)
         elif op == 'update_active':
             try:
@@ -146,14 +157,17 @@ class Operation(APIView):
                                                                                )
                 if data_ld!=0 and data_ld2!=0:
                     msg = '活動資訊更新成功'
-                    status = "OK"
+                    status_msg = "OK"
+                    status_code = status.HTTP_200_OK
                 else:
                     msg='未找到匹配的對象'
-                    status = "ERROR"
+                    status_msg = "ERROR"
+                    status_code = status.HTTP_404_NOT_FOUND
             except Exception as e:
                 msg = f'活動資訊更新失敗,發生異常:{e}'
-                status = "ERROR"
-        ret_json = dict(data={'msg':msg,'status':status})
+                status_msg = "ERROR"
+                status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        ret_json = dict(data={'msg':msg,'status':status_msg,'status_code':status_code})
         return Response(ret_json)
 
     def delete(self,request,*args,**kwargs):
@@ -166,14 +180,17 @@ class Operation(APIView):
             data_ld3 = Active_Show_Information.objects.filter(active_info_id=u_id).update(is_deleted=1)
             if data_ld!=0 and data_ld2!=0 and data_ld3!=0:
                 msg='活動資料、表演資料刪除成功'
-                status = "OK"
+                status_msg = "OK"
+                status_code = status.HTTP_200_OK
             else:
                 msg='匹配不到資料'
-                status = "ERROR"
+                status_msg = "ERROR"
+                status_code = status.HTTP_404_NOT_FOUND
         except Exception as e:
             msg = '刪除失敗,請重新操作'
-            status = "ERROR"
+            status_msg = "ERROR"
+            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
             print(e)
-        ret_json = dict(data={'msg':msg,'status':status})
+        ret_json = dict(data={'msg':msg,'status':status_msg,'status_code':status_code})
         print(ret_json)
         return Response(ret_json)

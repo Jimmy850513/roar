@@ -222,7 +222,7 @@
             return response.json();
         }).then((response)=>{
             show_modal(response.data.msg);
-            if(response.data.status == 'OK'){
+            if(response.data.status_msg == 'OK'){
                 $("#refresh_page").on("click",function(){
                     window.location.href = '/';
                 })
@@ -269,7 +269,7 @@
             return response.json()
         }).then((response)=>{
             show_modal(response.data.msg);
-            if(response.data.status == 'OK'){
+            if(response.data.status_msg == 'OK'){
                 $("#refresh_page").on("click",function(){
                 location.reload();
             })
