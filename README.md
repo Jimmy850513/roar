@@ -34,8 +34,7 @@
 ![螢幕快照 2024-08-11 22-44-02.png](https://github.com/Jimmy850513/roar/blob/roar/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202024-08-13%2022-12-33.png)
 
 如果登入正確會反回到首頁,登出的按鈕就會顯示出來：
-
-
+![image](https://github.com/Jimmy850513/roar/blob/roar/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202024-08-13%2022-11-07.png)
 
 ### 活動細節訪問介紹
 
