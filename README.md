@@ -223,21 +223,21 @@
 
 當你點擊下方的更新活動資訊的時候,就可以對輸入匡進行編輯,且會跳出一個確認更新的按鈕。
 
-![螢幕快照 2024-08-12 00-31-36.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/36ac4e72-29b0-4482-9835-c7df04a0627c/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-12_00-31-36.png)
+![螢幕快照 2024-08-12 00-31-36.png](https://github.com/Jimmy850513/roar/blob/roar/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202024-08-12%2000-31-36.png)
 
 當你更動資料後,點選確定儲存更新,當你更新成功的時候返回提示訊息。
 
-![螢幕快照 2024-08-12 00-32-45.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/8aef4f31-6174-46fe-8dd1-8caf25b63dab/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-12_00-32-45.png)
+![螢幕快照 2024-08-12 00-32-45.png](https://github.com/Jimmy850513/roar/blob/roar/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202024-08-12%2000-32-45.png)
 
 如果欲刪除活動的話,可點選刪除活動細節,就會刪除該活動,會跳轉回首頁的位置。(一樣會跳出提示窗告訴使用者刪除成功)
 
-![螢幕快照 2024-08-12 00-34-21.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/5faf3f11-8f63-4554-9a3f-4ab5df10e52c/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-12_00-34-21.png)
+![螢幕快照 2024-08-12 00-34-21.png](https://github.com/Jimmy850513/roar/blob/roar/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202024-08-12%2000-34-21.png)
 
 完成後跳轉到首頁,將看不到該比資料。
 
 如要更改表演資訊的話,可以點選table,上方就會有變更表演資訊的按鈕跳出,點選之後就可以編輯表演的資訊：
 
-![螢幕快照 2024-08-12 00-36-04.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/7e296f94-7965-4455-a58f-8eef581808dc/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-12_00-36-04.png)
+![螢幕快照 2024-08-12 00-36-04.png](https://github.com/Jimmy850513/roar/blob/roar/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202024-08-12%2000-36-04.png)
 
 編輯完成後會出現在下方的table可以顯示：
 
