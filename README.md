@@ -241,7 +241,7 @@
 
 編輯完成後會出現在下方的table可以顯示：
 
-![螢幕快照 2024-08-12 00-36-56.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/bd8a356a-5ef9-451f-aac5-35d5c63a3de3/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-12_00-36-56.png)
+![螢幕快照 2024-08-12 00-36-56.png](https://github.com/Jimmy850513/roar/blob/roar/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202024-08-12%2000-36-56.png)
 
 ## 排程程式的介紹
 
