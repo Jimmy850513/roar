@@ -31,9 +31,7 @@
 
 輸入錯誤的帳密：
 
-![螢幕快照 2024-08-11 22-42-26.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/0ce3de6d-b24d-4b3b-ab9c-3eb26c94d5d3/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-11_22-42-26.png)
-
-![螢幕快照 2024-08-11 22-44-02.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/07b5d86b-043a-4287-b14d-3f47ff459d8f/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-11_22-44-02.png)
+![螢幕快照 2024-08-11 22-44-02.png](https://github.com/Jimmy850513/roar/blob/roar/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202024-08-13%2022-12-33.png)
 
 如果登入正確會反回到首頁,登出的按鈕就會顯示出來：
 
