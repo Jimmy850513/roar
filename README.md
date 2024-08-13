@@ -35,23 +35,23 @@
 
 如果登入正確會反回到首頁,登出的按鈕就會顯示出來：
 
-![螢幕快照 2024-08-11 23-02-11.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/0834240f-f16c-4d6e-83be-8a4b5f3e05a7/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-11_23-02-11.png)
+
 
 ### 活動細節訪問介紹
 
 不管你有無登入都可以訪問到活動細節,要放問活動細節的話，點選table上的任一個活動,下方會跳出訪問活動細節的按鈕：
 
-![螢幕快照 2024-08-11 23-06-04.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/68782156-a93f-4dff-b1b1-55ea3e391598/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-11_23-06-04.png)
+
 
 有無登入得差別,只是可不可以對活動細節進行更新或是刪除,如果你今天是有登入的畫面會是下面這樣：
 
-![螢幕快照 2024-08-11 23-07-06.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/a32e3ca5-e284-46ba-867c-7c998ff557ef/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-11_23-07-06.png)
+
 
 下方會有兩個對活動操作的按鈕可以使用。
 
 無登入的話,不會有兩個按鈕,如下所示：
 
-![螢幕快照 2024-08-11 23-08-36.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/6486e6b9-4be7-4f17-b46e-a8b6d448259c/2c34ee49-b9f0-4ed2-b474-4c880d4b10d6/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2024-08-11_23-08-36.png)
+
 
 ### API操作說明介紹
 
